@@ -1,55 +1,41 @@
-import { useMovieContext } from "../context/MovieContext"
+import { useMovieContext } from "../context/useMovieContext"
+import { useDocumentTitle } from "../hooks/useDocumentTitle"
 import MovieCard from "../components/MovieCard"
+import { EmptyState } from "../components/States"
 
 function Favorites() {
 
     const { favorites } = useMovieContext()
 
+    useDocumentTitle("Favorites")
+
     return (
-        <div className="w-full flex-1 p-8 max-w-350 mx-auto">
+        <section aria-labelledby="favorites-heading" className="animate-fade-up">
 
-           
-            <div className="w-full flex flex-col items-center justify-center mb-14">
+            <h1 id="favorites-heading" className="font-display text-3xl font-bold sm:text-4xl">
+                Your favorites
+            </h1>
 
-                <h1 className="text-5xl font-bold text-transparent bg-clip-text 
-                    bg-linear-to-r from-red-500 via-blue-500 to-purple-500
-                    tracking-wide text-center">
+            <p className="mt-2 mb-8 text-sm text-muted">
+                {favorites.length === 0
+                    ? "Movies you save will show up here."
+                    : `${favorites.length} saved ${favorites.length === 1 ? "movie" : "movies"}`}
+            </p>
 
-                    Your Favorites ❤️
-
-                </h1>
-
-                <div className="w-32 h-1 mt-4 rounded-full 
-                    bg-linear-to-r from-red-500 to-purple-500 shadow-lg">
-                </div>
-
-            </div>
-
-            
             {favorites.length === 0 ? (
 
-                <div className="text-center p-14 bg-white/5 backdrop-blur-md 
-                    rounded-2xl shadow-2xl border border-white/10 
-                    max-w-lg mx-auto">
-
-                    <h2 className="mb-4 text-3xl font-bold text-red-500">
-                        No Favorite Movies Yet
-                    </h2>
-
-                    <p className="text-gray-400 text-lg">
-                        Start adding movies to your favorites
-                    </p>
-
-                </div>
+                <EmptyState
+                    title="No favorites yet"
+                    actionTo="/"
+                    actionLabel="Find a movie"
+                >
+                    Tap the heart on any movie to save it for later.
+                </EmptyState>
 
             ) : (
 
-             
-                <div className="grid grid-cols-1 
-                    sm:grid-cols-2 
-                    lg:grid-cols-3 
-                    xl:grid-cols-4 
-                    gap-8">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6
+                    md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
 
                     {favorites.map(movie => (
                         <MovieCard key={movie.id} movie={movie} />
@@ -59,7 +45,7 @@ function Favorites() {
 
             )}
 
-        </div>
+        </section>
     )
 }
 

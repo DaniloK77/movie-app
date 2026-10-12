@@ -5,7 +5,8 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // node_modules.nosync is where node_modules really lives (see README).
+  globalIgnores(['dist', 'node_modules.nosync']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
@@ -25,5 +26,10 @@ export default defineConfig([
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
     },
+  },
+  {
+    // Build config runs in Node, not the browser.
+    files: ['vite.config.js'],
+    languageOptions: { globals: globals.node },
   },
 ])
